@@ -4,8 +4,15 @@ import os
 def clear():
     os.system('CLS')
 
-def character():
-    hangman = [
+def character(hangman):
+    for i in range(8):
+        print(hangman[i])
+
+
+print("BEM VINDO AO JOGO DA FORCA")
+print("CATEGORIA: ANIMAIS")
+
+hangman = [
         ["------    "],
         ["|    |    "],
         ["|         "],
@@ -16,19 +23,12 @@ def character():
         ["--        "]
     ]
 
-    for i in range(8):
-        print(hangman[i])
-
-
-print("BEM VINDO AO JOGO DA FORCA")
-print("CATEGORIA: ANIMAIS")
-
 word_bank = ["macaco", "elefante", "tigre", "urso", "lobo", "cachorro", "gato"]
 chosen_word = random.choice(word_bank)
 chosen_word_length = len(chosen_word)
 completion_progress = [" "] * chosen_word_length
 
-player_life = 5
+player_life = 7
 
 for i in range(chosen_word_length):
     completion_progress[i] = "_ "
@@ -43,7 +43,7 @@ wrong_letter_index = 0
 while completion is False:
     #clear()
     print("\n")
-    character()
+    character(hangman)
     c_type = input("\ndigite uma letra: ")
     c_type = c_type.lower()
     if c_type in checklist_chosen_word:
@@ -83,13 +83,32 @@ while completion is False:
         wrong_letter_list[wrong_letter_index] = c_type
         wrong_letter_index += 1
 
-        print("letras erradas: ", end='')
+        if wrong_letter_index == 1:
+            hangman[2] = ["|    0    "]
+        elif wrong_letter_index == 2:
+            hangman[3] =  ["|    |    "]
+        elif wrong_letter_index == 3:
+            hangman[3] = ["|   /|    "]
+        elif wrong_letter_index == 4:
+            hangman[3] = ["|   /|\  "]
+        elif wrong_letter_index == 5:
+            hangman[4] = ["|   /     "]
+        elif wrong_letter_index == 6:
+            hangman[4] = ["|   / \  "]
+        
+
+
+        for i in range(chosen_word_length):
+            completion_progress[i] = "_ "
+            print(completion_progress[i], end='')
+
+        print("\nletras erradas: ", end='')
         for i in range(wrong_letter_index):
             print(wrong_letter_list[i], end=' ')
 
     
     if player_life <= 0:
-        print("ACABARAM AS CHANCES, VOCE PERDEU")
+        print("\nACABARAM AS CHANCES, VOCE PERDEU")
         completion = True
 
     if completion_progress == list(chosen_word):
