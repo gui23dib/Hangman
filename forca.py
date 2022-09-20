@@ -17,6 +17,19 @@ def showmenu(chosen_word_length, completion_progress, wrong_letter_index, wrong_
     for i in range(wrong_letter_index):
         print(wrong_letter_list[i], end=' ')
 
+def showendingscreen(type, chosen_word):
+    if type == 'quit':
+        print("A PALAVRA ERA:", chosen_word)
+        completion = True
+        print("\n\nClique para finalizar...", end='')
+        teste = input()
+        quit()
+    else: #type == pause
+        print("\n\nClique para continuar...", end='')
+        teste = input() #evitar limpeza automatica da tela
+
+
+
 print("BEM VINDO AO JOGO DA FORCA")
 print("CATEGORIA: ANIMAIS")
 
@@ -31,7 +44,27 @@ hangman = [
         ["--        "]
 ]
 
-word_bank = open("animais.txt", "r").read().splitlines()
+clear()
+print("BEM VINDO AO JOGO DA FORCA!!!")
+print("selecione uma categoria de jogo: \n")
+print("1 - animais")
+print("2 - comidas")
+print("3 - paises")
+print("4 - esportes")
+print("5 - ALEATORIO")
+
+word_bank_list = {
+    0 : 'word_list_container\listaanimais.txt', 
+    1 : 'word_list_container\comidas.txt',
+    2 : 'word_list_container\esportes.txt',
+    3 : 'word_list_container\paises.txt',
+    4: lambda : word_bank_list[random.randint(0,3)],
+    }
+
+word_bank_input = int(input())
+word_bank_pointer = word_bank_list[word_bank_input-1]
+
+word_bank = open(str(word_bank_pointer), "r").read().splitlines()
 chosen_word = random.choice(word_bank)
 chosen_word_length = len(chosen_word)
 completion_progress = [" "] * chosen_word_length
@@ -117,12 +150,14 @@ while completion is False:
 
     if player_life <= 0:
         print("\nACABARAM AS CHANCES, VOCE PERDEU")
-        print("A PALAVRA ERA:", chosen_word)
         completion = True
+        showendingscreen('quit', chosen_word)
 
     if completion_progress == list(chosen_word):
+        print("VOCE ADIVINHOU EM", total_tries, "TENTATIVAS")
         completion = True
-        print("VOCE ADIVINHOU EM", total_tries, "TENTATIVAS, A PALAVRA ERA:", chosen_word.upper() + "!!!")
+        showendingscreen('quit', chosen_word)
     
-    print("\n\nClique para continuar...", end='')
-    teste = input() #evitar limpeza automatica da tela
+    showendingscreen('pause', None)
+   
+word_bank.close()
