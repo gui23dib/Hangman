@@ -51,17 +51,19 @@ print("1 - animais")
 print("2 - comidas")
 print("3 - paises")
 print("4 - esportes")
-print("5 - ALEATORIO")
 
 word_bank_list = {
     0 : 'word_list_container\listaanimais.txt', 
     1 : 'word_list_container\comidas.txt',
     2 : 'word_list_container\esportes.txt',
     3 : 'word_list_container\paises.txt',
-    4: lambda : word_bank_list[random.randint(0,3)],
     }
 
 word_bank_input = int(input())
+if(word_bank_input > 4):
+    print("Opcao inexistente, tente de novo...")
+    exit()
+
 word_bank_pointer = word_bank_list[word_bank_input-1]
 
 word_bank = open(str(word_bank_pointer), "r").read().splitlines()
